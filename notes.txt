@@ -1,0 +1,13 @@
+https://github.com/bcooperstl/advent-of-code-cpp-starter
+
+Build:
+./mkdirs.sh
+make
+
+Run:
+bin/aoc -d 0 -p 1 -f data/sample/day0_input.txt
+bin/aoc -r data/sample/test_index_1.txt
+
+freq commands:
+bin/aoc -d 1 -p 2 -f data/sample/day1_input.txt
+vim ./src/solutions/aoc_day_1.cpp ./include/solutions/aoc_day_1.h
