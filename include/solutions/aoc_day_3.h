@@ -6,7 +6,7 @@
 class AocDay3 : public AocDay
 {
     private:
-        vector<long> read_input(string filename);
+        auto read_input(string filename);
     public:
         AocDay3();
         ~AocDay3();

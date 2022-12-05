@@ -19,11 +19,11 @@ AocDay3::~AocDay3()
 {
 }
 
-vector<long> AocDay3::read_input(string filename)
+auto AocDay3::read_input(string filename)
 {
     FileUtils fileutils;
     vector<string> raw_lines;
-    vector<long> data;
+    vector<string> data;
     if (!fileutils.read_as_list_of_strings(filename, raw_lines))
     {
         cerr << "Error reading in the data from " << filename << endl;
@@ -31,65 +31,58 @@ vector<long> AocDay3::read_input(string filename)
     }
     for (vector<string>::iterator iter = raw_lines.begin(); iter != raw_lines.end(); ++iter)
     {
-        long l;
-        string to_convert = *iter;
-        l = strtol(to_convert.c_str(), NULL, 10);
-        data.push_back(l);
+        //long l;
+        //string to_convert = *iter;
+        //l = strtol(to_convert.c_str(), NULL, 10);
+        data.push_back(*iter);
     }
-    data.push_back(0);
+    //data.push_back(0);
     return data;
 }
 
 string AocDay3::part1(string filename, vector<string> extra_args)
 {
-    vector<long> data = read_input(filename);
+    auto data = read_input(filename);
     long sum = 0;
-    long max = 0;
-    for (vector<long>::iterator iter = data.begin(); iter != data.end(); ++iter)
-    {
-        if  (*iter != 0){
-           sum+=*iter;
-        }
-        else {
-           max=std::max(max,sum);
-           sum=0;
-	}
+    string alpha="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+    for (int d=0;d<data.size();d++){
+       bool found=false;
+       for ( int i=0;i<data[d].size() && i<data[d].size()/2 && !found;i++) {
+         for ( int j=data[d].size()/2;j<data[d].size() && !found;j++) {
+           if ( data[d][i] == data[d][j] ){
+                sum+=(alpha.find_first_of(data[d][i])+1);
+                found=true;
+           }
+         }
+       }
     }
     ostringstream out;
-    out << max;
+    out << sum;
     return out.str();
 }
 
 string AocDay3::part2(string filename, vector<string> extra_args)
 {
-    if (extra_args.size() > 0)
-    {
-        cout << "There are " << extra_args.size() << " extra arguments given:" << endl;
-        for (vector<string>::iterator iter = extra_args.begin(); iter != extra_args.end(); ++iter)
-        {
-            cout << "[" << *iter << "]" << endl;
-        }
-    }
-    
-    vector<long> data = read_input(filename);
-
+    auto data = read_input(filename);
     long sum = 0;
-    std::vector<long> vec{0,0,0};
-    for (vector<long>::iterator iter = data.begin(); iter != data.end(); ++iter)
-    {
-        if  (*iter != 0){
-           sum+=*iter;
+    string alpha="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (int l=0;l<data.size();l=l+3){
+    bool found=false;
+    for (int i=0;i<data[l].size() && !found;i++){
+       for (int j=0;j<data[l+1].size() && !found;j++){
+         for (int k=0;k<data[l+2].size() && !found;k++){
+            if ( data[l][i] == data[l+1][j] && data[l+1][j]==data[l+2][k]) {
+               sum+=(alpha.find_first_of(data[l][i])+1);
+               found=true;
+            }
+          }
         }
-        else 
-	{
-           vec.push_back(sum);
-           sum=0;
-        }
-
+      }
     }
-    std::sort(vec.rbegin(),vec.rend());
+
     ostringstream out;
-    out << vec[0]+vec[1]+vec[2];
+    out << sum;
     return out.str();
 }
+
